@@ -62,5 +62,8 @@
 		<None Update="divisibill\index.html">
 			<DependentUpon>index.md</DependentUpon>
 		</None>
+		<None Update="Release Notes.html">
+		  <DependentUpon>Release Notes.md</DependentUpon>
+		</None>
 	</ItemGroup>
 </Project>
