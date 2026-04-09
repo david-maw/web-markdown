@@ -47,7 +47,11 @@
 
 		<!-- Raw Web site Assets for DivisiBill with a "help" prefix to prevent name collisions with any other raw resources -->
 		<MauiAsset Include="divisibill\**" LogicalName="help\%(RecursiveDir)%(Filename)%(Extension)" />
-	</ItemGroup>
+		<!-- We do not need the markdown files-->
+		<MauiAsset Remove="divisibill\**\*.md" />
+		<!-- Or the markdown preview stylesheet -->
+	    <MauiAsset Remove="divisibill\md-styles.css" />
+  	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.50" />
@@ -56,14 +60,30 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Update="divisibill\icons.html">
-	    <DependentUpon>icons.md</DependentUpon>
-	  </None>
-		<None Update="divisibill\index.html">
-			<DependentUpon>index.md</DependentUpon>
-		</None>
-		<None Update="Release Notes.html">
-		  <DependentUpon>Release Notes.md</DependentUpon>
-		</None>
+		<!-- Associate DivisiBill\* HTML files with corresponding markdown dependencies -->
+		<MauiAsset Update="divisibill\*.html">
+			<DependentUpon>%(Filename).md</DependentUpon>
+		</MauiAsset>
+
+		<!--Also ensure that any images (SVG or PNG) that are used in the HTML files are also recognized as dependencies of the
+		markdown files. This way, when you see a markdown file, all related assets are correctly associated with it in the 
+		project structure you see in the Solution Explorer.-->
+
+		<!-- DivisiBill SVG files with corresponding markdown dependencies -->
+		<MauiAsset Update="divisibill\*.svg">
+			<DependentUpon>%(Filename).md</DependentUpon>
+		</MauiAsset>
+		<!-- DivisiBill PNG files with corresponding svg dependencies -->
+		<MauiAsset Update="divisibill\*.png">
+			<DependentUpon>%(Filename).svg</DependentUpon>
+		</MauiAsset>
+	</ItemGroup>
+
+	<ItemGroup>
+		<!--The release notes are in a different folder but go along with the other help files at run time-->
+		<MauiAsset Include="Release Notes.html" LogicalName="help\Release Notes.html" />
+		<MauiAsset Update="Release Notes.html">
+			<DependentUpon>Release Notes.md</DependentUpon>
+		</MauiAsset>
 	</ItemGroup>
 </Project>
